@@ -37,7 +37,7 @@ namespace keepit.Services
     {
       Profile profile = p_repo.GetProfileById(profileId);
       Vault vaultcheck = p_repo.GetVaultByProfile(profile.Id);
-      if (vaultcheck.IsPrivate == true && vaultcheck.CreatorId != userId)
+      if (vaultcheck.IsPrivate == true && userId != profileId)
       {
         throw new Exception("these vault are privite");
       }
