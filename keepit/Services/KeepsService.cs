@@ -44,8 +44,8 @@ namespace keepit.Services
       og.Name = updates.Name ?? og.Name;
       og.Img = updates.Img ?? og.Img;
       og.Description = updates.Description ?? og.Description;
-      og.Views = updates.Views;
-      og.Kept = updates.Kept;
+      // og.Views = updates.Views;
+      // og.Kept = updates.Kept;
       ks_repo.Edit(og);
       return og;
 

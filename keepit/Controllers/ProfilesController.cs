@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using CodeWorks.Auth0Provider;
 using keepit.Models;
 using keepit.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +44,19 @@ namespace keepit.Controllers
         return BadRequest(e.Message);
       }
     }
-
+    [HttpGet("{id}/vaults")]
+    public async Task<ActionResult<List<Vault>>> GetAllVaults(string id)
+    {
+      try
+      {
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        List<Vault> vaults = _ps.GetAllVaults(id, userInfo?.Id);
+        return Ok(vaults);
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
   }
 }

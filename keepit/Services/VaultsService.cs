@@ -28,7 +28,13 @@ namespace keepit.Services
       {
         throw new Exception("Invaild vault Id");
       }
+      if (found.IsPrivate == true && found.CreatorId != userId)
+      {
+        throw new Exception("This is a privite Vault!");
+      }
+
       return found;
+
     }
 
     internal Vault Edit(Vault updates, Account userInfo)
@@ -45,6 +51,13 @@ namespace keepit.Services
       return og;
     }
 
+
+
+    internal List<Vault> GetAllMyVaults(string id)
+    {
+      return vs_repo.GetAllMyVaults(id);
+    }
+
     internal string Remove(int id, Account userInfo)
     {
       Vault vault = vs_repo.GetById(id);
@@ -57,9 +70,13 @@ namespace keepit.Services
 
 
 
-    internal List<KeepsViewModal> GetKeepsByVaultId(int id)
+    internal List<KeepsViewModal> GetKeepsByVaultId(int id, string userId)
     {
       Vault foundvault = vs_repo.GetById(id);
+      if (foundvault.IsPrivate == true && foundvault.CreatorId != userId)
+      {
+        throw new Exception("This is vault is private!");
+      }
       return vk_repo.GetKeepsByVaultId(foundvault.Id);
     }
 

@@ -25,8 +25,17 @@ namespace keepit.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        if (userInfo?.Id == null)
+        {
+          throw new Exception("sign in please");
+        }
         vaultKeepData.CreatorId = userInfo.Id;
-        VaultKeep vaultkeep = _vks.Create(vaultKeepData);
+        vaultKeepData.Creator = userInfo;
+        VaultKeep vaultkeep = _vks.Create(vaultKeepData, userInfo?.Id);
+        if (vaultkeep.Creator == null)
+        {
+          throw new Exception("Login in");
+        }
         return Ok(vaultkeep);
       }
       catch (Exception e)

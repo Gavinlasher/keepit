@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Dapper;
@@ -56,6 +57,12 @@ namespace keepit.Repositories
     isPrivate = @IsPrivate
       WHERE id = @Id;";
       _db.Execute(sql, og);
+    }
+
+    internal List<Vault> GetAllMyVaults(string id)
+    {
+      string sql = "SELECT * FROM vaults WHERE vaults.creatorId = @id";
+      return _db.Query<Vault>(sql, new { id }).ToList();
     }
 
     internal string Remove(int id)

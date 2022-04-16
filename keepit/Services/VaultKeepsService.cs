@@ -13,8 +13,12 @@ namespace keepit.Services
       this.vk_repo = vk_repo;
     }
 
-    internal VaultKeep Create(VaultKeep vaultKeepData)
+    internal VaultKeep Create(VaultKeep vaultKeepData, string userId)
     {
+      if (vaultKeepData.CreatorId != userId)
+      {
+        throw new Exception("login in");
+      }
       return vk_repo.Create(vaultKeepData);
     }
 

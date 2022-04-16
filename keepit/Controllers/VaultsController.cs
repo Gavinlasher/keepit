@@ -29,7 +29,7 @@ namespace keepit.Controllers
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
         vaultData.CreatorId = userInfo.Id;
         vaultData.Creator = userInfo;
-        vaultData.IsPrivate = false;
+        // vaultData.IsPrivate = false; doesnt work user will set
         Vault vault = _vs.Create(vaultData);
         return Ok(vault);
       }
@@ -39,13 +39,13 @@ namespace keepit.Controllers
       }
     }
     [HttpGet("{id}")]
-    [Authorize]
+
     public async Task<ActionResult<Vault>> GetById(int id)
     {
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        Vault vault = _vs.GetById(id, userInfo.Id);
+        Vault vault = _vs.GetById(id, userInfo?.Id);
         return Ok(vault);
       }
       catch (Exception e)
@@ -85,11 +85,17 @@ namespace keepit.Controllers
       }
     }
     [HttpGet("{id}/keeps")]
-    public ActionResult<List<KeepsViewModal>> GetKeepsByVaultId(int id)
+    public async Task<ActionResult<List<KeepsViewModal>>> GetKeepsByVaultIdAsync(int id)
     {
       try
       {
-        List<KeepsViewModal> keeps = _vs.GetKeepsByVaultId(id);
+        Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
+        // if (userInfo == null)
+        // {
+        //   throw new Exception("please log in");
+        // }
+        // note i hit the check with elvis
+        List<KeepsViewModal> keeps = _vs.GetKeepsByVaultId(id, userInfo?.Id);
         return Ok(keeps);
 
       }
