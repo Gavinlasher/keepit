@@ -25,7 +25,9 @@
     <div class="row">
       <h2 class="mt-5">
         Vaults
-        <span><i class="mdi mdi-plus selectable" title="Add a Vault"></i></span>
+        <span v-if="account.id == activeProfile.id"
+          ><i class="mdi mdi-plus selectable" title="Add a Vault"></i
+        ></span>
       </h2>
       <div class="col-md-3 p-3" v-for="v in activeVaults" :key="v.id">
         <div
@@ -41,7 +43,14 @@
     <div class="row">
       <h2 class="mt-5">
         Keeps
-        <span><i class="mdi mdi-plus selectable" title="Add a Keeps"></i></span>
+        <span v-if="account.id == activeProfile.id"
+          ><i
+            class="mdi mdi-plus selectable"
+            title="Add a Keeps"
+            data-bs-toggle="modal"
+            data-bs-target="#createKeep"
+          ></i
+        ></span>
       </h2>
     </div>
     <div class="masonary-with-colums">
@@ -50,6 +59,9 @@
       </div>
     </div>
   </div>
+  <Modal id="createKeep">
+    <template #body><KeepForm /></template>
+  </Modal>
 </template>
 
 
@@ -80,7 +92,8 @@ export default {
       },
       activeProfile: computed(() => AppState.activeProfile),
       activeVaults: computed(() => AppState.profileVaults),
-      activeKeeps: computed(() => AppState.profileKeeps)
+      activeKeeps: computed(() => AppState.profileKeeps),
+      account: computed(() => AppState.account)
     }
   }
 }

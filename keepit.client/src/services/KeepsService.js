@@ -18,5 +18,10 @@ class KeepsService {
     logger.log(res.data)
     AppState.keeps = AppState.keeps.filter(k => k.id != id)
   }
+  async createKeep(body) {
+    const res = await api.post("api/keeps", body)
+    logger.log(res.data)
+    AppState.keeps = [...AppState.keeps, res.data]
+  }
 }
 export const keepsService = new KeepsService();
