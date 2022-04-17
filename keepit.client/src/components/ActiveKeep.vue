@@ -26,7 +26,11 @@
         <h2 class="selectable" v-if="activeKeep.creatorId == account.id">
           <i class="mdi mdi-delete" @click="removeKeep(activeKeep.id)"></i>
         </h2>
-        <div class="d-flex align-items-center">
+        <div
+          class="d-flex align-items-center selectable"
+          title="Go to Profile Page"
+          @click="goTo(activeKeep.creatorId)"
+        >
           <img
             class="img-fluid rounded pp"
             :src="activeKeep.creator?.picture"
@@ -49,8 +53,10 @@ import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { keepsService } from "../services/KeepsService"
 import { Modal } from "bootstrap"
+import { useRouter } from "vue-router"
 export default {
   setup() {
+    const router = useRouter()
     return {
       async removeKeep(id) {
         try {
@@ -60,6 +66,10 @@ export default {
           logger.log(error)
           Pop.toast(error.message, "error message")
         }
+      },
+      async goTo(id) {
+        Modal.getOrCreateInstance(document.getElementById('active-keep')).hide()
+        router.push({ name: "Profile", params: { id } })
       },
       activeKeep: computed(() => AppState.activeKeep),
       random: computed(() => Math.floor(Math.random() * 445)),
