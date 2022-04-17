@@ -24,7 +24,8 @@ export default {
       }
     })
     return {
-      keeps: computed(() => AppState.keeps)
+      keeps: computed(() => AppState.keeps),
+      bgImage: computed(() => `url(${AppState.keeps.img})`)
     }
   }
 }
@@ -33,7 +34,7 @@ export default {
 <style scoped lang="scss">
 .masonry-with-columns {
   columns: 6 200px;
-  column-gap: 1rem;
+  column-gap: 10px;
 
   div {
     display: inline-block;
