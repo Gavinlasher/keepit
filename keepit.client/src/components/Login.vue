@@ -15,14 +15,14 @@
         aria-expanded="false"
         id="authDropdown"
       >
-        <div v-if="account.picture">
+        <div v-if="account.picture" class="bg-grey">
           <img
             :src="account.picture"
             alt="account photo"
             height="40"
             class="rounded"
           />
-          <span class="mx-3 text-success lighten-30">{{ account.name }}</span>
+          <span class="mx-3 text-light text-shadow">{{ account.name }}</span>
         </div>
       </div>
       <div
@@ -80,5 +80,8 @@ export default {
 }
 .hoverable {
   cursor: pointer;
+}
+.bg-grey {
+  background-color: grey;
 }
 </style>

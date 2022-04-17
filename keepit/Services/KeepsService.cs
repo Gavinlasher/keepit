@@ -31,6 +31,9 @@ namespace keepit.Services
       {
         throw new Exception("Invaild Keep ID ");
       }
+      found.Views++;
+      ks_repo.Edit(found);
+
       return found;
     }
 

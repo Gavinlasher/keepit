@@ -32,7 +32,8 @@ namespace keepit.Repositories
 
     internal List<Vault> GetAllVaults(string id)
     {
-      string sql = "SELECT * FROM vaults WHERE creatorId = @id";
+      string sql = "SELECT * FROM vaults WHERE creatorId = @id AND isPrivate = false";
+
       return _db.Query<Vault>(sql, new { id }).ToList();
     }
 

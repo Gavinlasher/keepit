@@ -7,15 +7,19 @@ namespace keepit.Services
   public class VaultKeepsService
   {
     private readonly VaultKeepsRepository vk_repo;
+    private readonly VaultsRepository v_repo;
 
-    public VaultKeepsService(VaultKeepsRepository vk_repo)
+    public VaultKeepsService(VaultKeepsRepository vk_repo, VaultsRepository v_repo)
     {
       this.vk_repo = vk_repo;
+      this.v_repo = v_repo;
     }
 
     internal VaultKeep Create(VaultKeep vaultKeepData, string userId)
     {
-      if (vaultKeepData.CreatorId != userId)
+      Vault foundVault = v_repo.GetById(vaultKeepData.VaultId);
+
+      if (foundVault.CreatorId != userId)
       {
         throw new Exception("login in");
       }

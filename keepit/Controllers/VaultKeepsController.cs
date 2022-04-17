@@ -25,7 +25,7 @@ namespace keepit.Controllers
       try
       {
         Account userInfo = await HttpContext.GetUserInfoAsync<Account>();
-        if (userInfo?.Id == null)
+        if (userInfo.Id == null)
         {
           throw new Exception("sign in please");
         }
