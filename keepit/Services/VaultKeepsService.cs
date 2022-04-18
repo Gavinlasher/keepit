@@ -9,11 +9,13 @@ namespace keepit.Services
   {
     private readonly VaultKeepsRepository vk_repo;
     private readonly VaultsRepository v_repo;
+    private readonly KeepsRepository k_repo;
 
-    public VaultKeepsService(VaultKeepsRepository vk_repo, VaultsRepository v_repo)
+    public VaultKeepsService(VaultKeepsRepository vk_repo, VaultsRepository v_repo, KeepsRepository k_repo)
     {
       this.vk_repo = vk_repo;
       this.v_repo = v_repo;
+      this.k_repo = k_repo;
     }
 
     internal VaultKeep Create(VaultKeep vaultKeepData, string userId)
@@ -24,6 +26,9 @@ namespace keepit.Services
       {
         throw new Exception("login in");
       }
+      Keep foundKeep = k_repo.GetById(vaultKeepData.KeepId);
+      foundKeep.Kept++;
+      k_repo.Edit(foundKeep);
       return vk_repo.Create(vaultKeepData);
     }
 
