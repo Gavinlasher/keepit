@@ -19,7 +19,7 @@
     </div>
     <div class="masonary-with-colums">
       <div v-for="vk in vaultKeeps" :key="vk.id">
-        <Keeps :keeps="vk" />
+        <Keeps :keeps="vk" class="selectable" />
       </div>
     </div>
   </div>
