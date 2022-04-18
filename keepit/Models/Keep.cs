@@ -12,7 +12,7 @@ namespace keepit.Models
     public string CreatorId { get; set; }
     public Profile Creator { get; set; }
   }
-  public class KeepsViewModal : VaultKeep
+  public class KeepsViewModal : Keep
   {
     public int VaultKeepId { get; set; }
   }
