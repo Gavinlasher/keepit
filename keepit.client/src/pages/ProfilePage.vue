@@ -26,7 +26,12 @@
       <h2 class="mt-5">
         Vaults
         <span v-if="account.id == activeProfile.id"
-          ><i class="mdi mdi-plus selectable" title="Add a Vault"></i
+          ><i
+            class="mdi mdi-plus selectable"
+            title="Add a Vault"
+            data-bs-toggle="modal"
+            data-bs-target="#createVault"
+          ></i
         ></span>
       </h2>
       <div class="col-md-3 p-3" v-for="v in activeVaults" :key="v.id">
@@ -54,13 +59,16 @@
       </h2>
     </div>
     <div class="masonary-with-colums">
-      <div v-for="k in activeKeeps" :key="k.id">
-        <img class="img-fluid" :src="k.img" alt="" />
+      <div v-for="k in activeKeeps" :key="k.id" class="rounded">
+        <img class="img-fluid p-2 rounded" :src="k.img" alt="" />
       </div>
     </div>
   </div>
   <Modal id="createKeep">
     <template #body><KeepForm /></template>
+  </Modal>
+  <Modal id="createVault">
+    <template #body><VaultForm /></template>
   </Modal>
 </template>
 
