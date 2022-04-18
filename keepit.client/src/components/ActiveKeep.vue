@@ -25,9 +25,9 @@
           {{ activeKeep.description }}
         </p>
       </div>
-      <div class="col-md-12 align-items-flex-end">
-        <div class="d-flex justify-content-between mt-5 text-wrap">
-          <select name="" id="" v-model="vaultId" class="text-dark">
+      <div class="col-md-12">
+        <div class="d-flex bottom-left justify-content-between mt-5 text-wrap">
+          <select name="" id="" v-model="vaultId" class="text-dark me-5">
             <option
               class="text-dark"
               :value="pv.id"
@@ -38,11 +38,11 @@
             </option>
           </select>
           <button class="btn btn-success" @click="addToVaultKeep">+</button>
-          <h2 class="selectable" v-if="activeKeep.creatorId == account.id">
+          <h2 class="selectable me-5" v-if="activeKeep.creatorId == account.id">
             <i class="mdi mdi-delete" @click="removeKeep(activeKeep.id)"></i>
           </h2>
           <div
-            class="d-flex align-items-center selectable"
+            class="d-flex align-items-center selectable ms-5"
             title="Go to Profile Page"
             @click="goTo(activeKeep.creatorId)"
           >
@@ -69,10 +69,11 @@ import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { keepsService } from "../services/KeepsService"
 import { Modal } from "bootstrap"
-import { useRouter } from "vue-router"
+import { useRoute, useRouter } from "vue-router"
 import { vaultKeepsService } from "../services/VaultKeepsService"
 export default {
   setup() {
+    const route = useRoute()
     const router = useRouter()
     const vaultId = ref({})
     return {
@@ -129,5 +130,10 @@ i {
 }
 .K {
   color: green;
+}
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
 }
 </style>

@@ -7,7 +7,7 @@
       @click="setActive"
     >
       <img class="img-fluid rounded" :src="keeps.img" alt="" />
-      <div class="d-flex align-items-flex-end moveup">
+      <div class="d-flex align-items-flex-end bottom-left">
         <h3 class="text-white me-4">
           {{ keeps.name }}
         </h3>
@@ -32,6 +32,7 @@ import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { keepsService } from "../services/KeepsService"
 import { vaultsService } from "../services/VaultsService"
+import { useRoute } from "vue-router"
 export default {
   props: {
     keeps: {
@@ -40,7 +41,7 @@ export default {
     }
   },
   setup(props) {
-
+    const route = useRoute()
     return {
       async setActive() {
         try {
@@ -78,5 +79,10 @@ export default {
 }
 h3 {
   text-shadow: 2px 2px black;
+}
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
 }
 </style>
