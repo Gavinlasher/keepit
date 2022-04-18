@@ -97,6 +97,7 @@ export default {
             keepId: AppState.activeKeep.id
           }
           await vaultKeepsService.addToVaultKeep(vaultKeep)
+
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message)

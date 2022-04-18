@@ -13,6 +13,7 @@ class VaultKeepsService {
     const res = await api.post("api/vaultkeeps", body)
     logger.log(res.data)
   }
+
 }
 
 export const vaultKeepsService = new VaultKeepsService();
