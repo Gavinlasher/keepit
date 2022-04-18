@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using keepit.Models;
 using keepit.Repositories;
 
@@ -26,15 +27,21 @@ namespace keepit.Services
       return vk_repo.Create(vaultKeepData);
     }
 
+    internal List<KeepsViewModal> GetAllKeepsByVaultId(int id)
+    {
+      Vault found = v_repo.GetById(id);
+      return vk_repo.GetKeepsByVaultId(found.Id);
+    }
     internal VaultKeep GetById(int id)
     {
-      VaultKeep found = vk_repo.GetById(id);
-      if (found == null)
+      VaultKeep vaultKeep = vk_repo.GetById(id);
+      if (vaultKeep == null)
       {
         throw new Exception("This is a INvaild VaultKeep Id");
       }
-      return found;
+      return vaultKeep;
     }
+
 
     internal void Remove(int VaultKeepId, string userId)
     {
