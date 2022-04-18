@@ -27,7 +27,17 @@
       </div>
       <div class="col-md-12 align-items-flex-end">
         <div class="d-flex justify-content-between mt-5 text-wrap">
-          <button class="btn btn-outline-success">ADD TO VAULT</button>
+          <select name="" id="" v-model="vaultId" class="text-dark">
+            <option
+              class="text-dark"
+              :value="pv.id"
+              v-for="pv in profileVaults"
+              :key="pv.id"
+            >
+              {{ pv.name }}
+            </option>
+          </select>
+          <button class="btn btn-success" @click="addToVaultKeep">+</button>
           <h2 class="selectable" v-if="activeKeep.creatorId == account.id">
             <i class="mdi mdi-delete" @click="removeKeep(activeKeep.id)"></i>
           </h2>
@@ -53,17 +63,20 @@
 
 
 <script>
-import { computed } from "@vue/reactivity"
+import { computed, ref } from "@vue/reactivity"
 import { AppState } from "../AppState"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { keepsService } from "../services/KeepsService"
 import { Modal } from "bootstrap"
 import { useRouter } from "vue-router"
+import { vaultKeepsService } from "../services/VaultKeepsService"
 export default {
   setup() {
     const router = useRouter()
+    const vaultId = ref({})
     return {
+      vaultId,
       async removeKeep(id) {
         try {
           await keepsService.removeKeep(id)
@@ -77,6 +90,19 @@ export default {
         Modal.getOrCreateInstance(document.getElementById('active-keep')).hide()
         router.push({ name: "Profile", params: { id } })
       },
+      async addToVaultKeep(id) {
+        try {
+          let vaultKeep = {
+            vaultId: vaultId.value,
+            keepId: AppState.activeKeep.id
+          }
+          await vaultKeepsService.addToVaultKeep(vaultKeep)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message)
+        }
+      },
+      profileVaults: computed(() => AppState.activeVaults),
       activeKeep: computed(() => AppState.activeKeep),
       random: computed(() => Math.floor(Math.random() * 445)),
       account: computed(() => AppState.account)

@@ -34,7 +34,7 @@
           ></i
         ></span>
       </h2>
-      <div class="col-md-3 p-3" v-for="v in activeVaults" :key="v.id">
+      <div class="col-md-3 p-4" v-for="v in activeVaults" :key="v.id">
         <div
           class="bg-img rounded shadow selectable"
           @click="goToVaultPage(v.id)"
@@ -59,8 +59,10 @@
       </h2>
     </div>
     <div class="masonary-with-colums">
-      <div v-for="k in activeKeeps" :key="k.id" class="rounded">
-        <img class="img-fluid p-2 rounded" :src="k.img" alt="" />
+      <div v-for="k in activeKeeps" :key="k.id">
+        <Keeps :keeps="k" />
+        <!-- <img class="img-fluid p-2 rounded" :src="k.img" alt="" />
+        <h3 class="moveup text-light">{{ k.name }}</h3> -->
       </div>
     </div>
   </div>
@@ -132,5 +134,11 @@ i {
     display: inline-block;
     width: 100%;
   }
+}
+.moveup {
+  transform: translate(14px, -45px);
+}
+h3 {
+  text-shadow: 2px 2px black;
 }
 </style>

@@ -25,9 +25,18 @@ namespace keepit.Repositories
     {
       string sql =
       @"
-      SELECT * FROM keeps WHERE creatorId = @id
+      SELECT
+      k.*,
+      a.*
+      FROM keeps k
+      JOIN accounts a ON a.id = k.creatorId 
+      WHERE k.creatorId = @id
       ";
-      return _db.Query<Keep>(sql, new { id }).ToList();
+      return _db.Query<Keep, Account, Keep>(sql, (keep, a) =>
+      {
+        keep.Creator = a;
+        return keep;
+      }, new { id }).ToList();
     }
 
     internal List<Vault> GetAllVaults(string id)

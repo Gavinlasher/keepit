@@ -43,6 +43,7 @@ namespace keepit
       services.AddTransient<VaultKeepsService>();
       services.AddTransient<ProfilesRepository>();
       services.AddTransient<ProfilesService>();
+
     }
 
     private void ConfigureCors(IServiceCollection services)

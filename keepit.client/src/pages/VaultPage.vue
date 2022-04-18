@@ -1,8 +1,8 @@
 <template>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
-        <h1></h1>
+      <div class="col-md-12" v-for="vk in vaultKeeps" :key="vk.id">
+        <Keeps :keeps="vk" />
       </div>
     </div>
   </div>
@@ -10,11 +10,12 @@
 
 
 <script>
-import { onMounted } from "@vue/runtime-core"
+import { computed, onMounted } from "@vue/runtime-core"
 import { logger } from "../utils/Logger"
 import Pop from "../utils/Pop"
 import { useRoute } from "vue-router"
 import { vaultKeepsService } from "../services/VaultKeepsService"
+import { AppState } from "../AppState"
 export default {
   setup() {
     const route = useRoute()
@@ -26,7 +27,9 @@ export default {
         Pop.toast(error.message, "error message")
       }
     })
-    return {}
+    return {
+      vaultKeeps: computed(() => AppState.profileVaultKeeps)
+    }
   }
 }
 </script>
