@@ -36,13 +36,13 @@ namespace keepit.Services
     internal List<Vault> GetAllVaults(string profileId, string userId)
     {
       Profile profile = p_repo.GetProfileById(profileId);
-      Vault vaultcheck = p_repo.GetVaultByProfile(profile.Id);
-      if (vaultcheck.IsPrivate == true && userId != profileId)
+      if (profileId != userId)
       {
-        throw new Exception("these vault are privite");
-      }
 
-      return p_repo.GetAllVaults(profile.Id);
+        return p_repo.GetAllVaults(profile.Id);
+      }
+      return p_repo.GetAllMyVaults(profileId);
     }
+
   }
 }

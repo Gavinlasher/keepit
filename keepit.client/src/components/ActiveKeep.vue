@@ -28,7 +28,7 @@
       <div class="col-md-12">
         <div class="d-flex bottom-left justify-content-between mt-5 text-wrap">
           <select
-            v-if="route != 'Vault'"
+            v-if="route != 'Vault' && account.id != null"
             name=""
             id=""
             v-model="vaultId"
@@ -37,14 +37,14 @@
             <option
               class="text-dark"
               :value="pv.id"
-              v-for="pv in profileVaults"
+              v-for="pv in userVaults"
               :key="pv.id"
             >
               {{ pv.name }}
             </option>
           </select>
           <button
-            v-if="route != 'Vault'"
+            v-if="route != 'Vault' && account.id != null"
             class="btn btn-success"
             @click="addToVaultKeep"
           >
@@ -53,7 +53,7 @@
           <button
             v-if="route == 'Vault'"
             class="btn btn-outline-primary"
-            @click="removeKeepFromVault(keeps.name)"
+            @click="removeKeepFromVault(activeKeep.vaultKeepId)"
           >
             Remove keep from Vault
           </button>
@@ -93,17 +93,19 @@ import { keepsService } from "../services/KeepsService"
 import { Modal } from "bootstrap"
 import { useRoute, useRouter } from "vue-router"
 import { vaultKeepsService } from "../services/VaultKeepsService"
+import { onMounted } from "@vue/runtime-core"
 export default {
-  props: {
-    keeps: {
-      type: Object,
-      required: true
-    }
-  },
+  // props: {
+  //   keeps: {
+  //     type: Object,
+  //     required: true
+  //   }
+  // },
   setup(props) {
     const route = useRoute()
     const router = useRouter()
     const vaultId = ref({})
+
     return {
       vaultId,
       async removeKeep(id) {
@@ -136,14 +138,34 @@ export default {
         }
       },
       async removeKeepFromVault(id) {
-        logger.log(id)
+        try {
+
+          await vaultKeepsService.removeKeep(id)
+
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message)
+        }
       },
+      async getVaultKeeps() {
+        try {
+          if (route.name == 'Vault') {
+            await vaultKeepsService.getKeepsByVault(route.params.id)
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message)
+        }
+      },
+      // newKeep: computed(() => props.keeps.id),
       profileVaults: computed(() => AppState.activeVaults),
       activeKeep: computed(() => AppState.activeKeep),
       random: computed(() => Math.floor(Math.random() * 445)),
       account: computed(() => AppState.account),
       route: computed(() => route.name),
+      activeVaultKeep: computed(() => AppState.profileVaultKeeps),
       // curkeep: computed(() => props.keeps.vaultKeepId)
+      userVaults: computed(() => AppState.userVaults)
 
 
     }

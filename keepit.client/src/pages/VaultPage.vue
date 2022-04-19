@@ -19,7 +19,7 @@
     </div>
     <div class="masonary-with-colums">
       <div v-for="vk in vaultKeeps" :key="vk.id">
-        <Keeps :keeps="vk" class="selectable" />
+        <Keeps :keeps="vk" />
       </div>
     </div>
   </div>
@@ -47,6 +47,7 @@ export default {
       } catch (error) {
         logger.error(error)
         Pop.toast(error.message, "error message")
+        router.push({ name: 'Home' })
       }
     })
     return {

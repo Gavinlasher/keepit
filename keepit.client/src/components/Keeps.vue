@@ -20,7 +20,9 @@
     </div>
   </div>
   <Modal id="active-keep">
-    <template #body><ActiveKeep /></template>
+    <template #body>
+      <ActiveKeep />
+    </template>
   </Modal>
 </template>
 
@@ -33,6 +35,7 @@ import Pop from "../utils/Pop"
 import { keepsService } from "../services/KeepsService"
 import { vaultsService } from "../services/VaultsService"
 import { useRoute } from "vue-router"
+import { vaultKeepsService } from "../services/VaultKeepsService"
 export default {
   props: {
     keeps: {
@@ -46,14 +49,17 @@ export default {
       async setActive() {
         try {
           AppState.activeKeep = props.keeps
+          props.keeps.views++
+          logger.log(props.keeps, 'this is a keep ')
           await keepsService.getActiveKeep(props.keeps.id)
-          await vaultsService.getProfileVaults(props.keeps.creatorId)
+          // await vaultsService.getProfileVaults(props.keeps.creatorId)
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message)
         }
       },
-      bgImage: computed(() => `url(${props.keeps.img})`)
+      bgImage: computed(() => `url(${props.keeps.img})`),
+      route: computed(() => route.name)
     }
   }
 }

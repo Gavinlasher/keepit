@@ -87,6 +87,7 @@ export default {
     const route = useRoute()
     const router = useRouter()
     onMounted(async () => {
+
       try {
         await profilesService.getProfile(route.params.id)
         await profilesService.getVaults(route.params.id)
@@ -95,6 +96,7 @@ export default {
         logger.error(error)
         Pop.toast(error.message, "error message")
       }
+
     })
     return {
       goToVaultPage(id) {

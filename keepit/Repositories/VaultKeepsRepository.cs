@@ -61,7 +61,7 @@ namespace keepit.Repositories
         a.*
       FROM vaultkeeps vk
       JOIN keeps k ON k.id = vk.keepId
-      JOIN accounts a ON a.id = vk.creatorId
+      JOIN accounts a ON a.id = k.creatorId
       WHERE vk.vaultId = @VaultId
       ";
       return _db.Query<KeepsViewModal, Account, KeepsViewModal>(sql, (keepsview, a) =>

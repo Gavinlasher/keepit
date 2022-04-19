@@ -46,6 +46,13 @@ namespace keepit.Repositories
       return _db.Query<Vault>(sql, new { id }).ToList();
     }
 
+    internal List<Vault> GetAllMyVaults(string id)
+    {
+      string sql = "SELECT * FROM vaults WHERE creatorId = @id ";
+
+      return _db.Query<Vault>(sql, new { id }).ToList();
+    }
+
     internal Vault GetVaultByProfile(string id)
     {
       string sql = @"
