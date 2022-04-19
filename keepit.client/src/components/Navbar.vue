@@ -1,7 +1,6 @@
 <template>
   <div
     class="
-      row
       navbar navbar-expand-lg navbar-dark
       bg-custom
       px-3
