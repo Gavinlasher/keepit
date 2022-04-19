@@ -52,11 +52,67 @@
 
 
 <script>
+import { computed, ref } from "@vue/reactivity"
+import { AppState } from "../AppState"
+import { logger } from "../utils/Logger"
+import Pop from "../utils/Pop"
+import { keepsService } from "../services/KeepsService"
+import { vaultsService } from "../services/VaultsService"
+import { useRoute } from "vue-router"
+import { Modal } from "bootstrap"
 export default {
-  setup() {
-    return {}
+  props: {
+    keeps: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props) {
+    const route = useRoute()
+    const router = useRouter()
+    const vaultId = ref({})
+    return {
+      vaultId,
+      // async removeKeep(id) {
+      //   try {
+      //     if (await Pop.confirm()) {
+      //       await keepsService.removeKeep(id)
+
+      //       Modal.getOrCreateInstance(document.getElementById("active-keep")).hide()
+      //     }
+      //   } catch (error) {
+      //     logger.log(error)
+      //     Pop.toast(error.message, "error message")
+      //   }
+      // },
+      async goTo(id) {
+        Modal.getOrCreateInstance(document.getElementById('active-keep')).hide()
+        router.push({ name: "Profile", params: { id } })
+      },
+      // async addToVaultKeep(id) {
+      //   try {
+      //     let vaultKeep = {
+      //       vaultId: vaultId.value,
+      //       keepId: AppState.activeKeep.id
+      //     }
+      //     await vaultKeepsService.addToVaultKeep(vaultKeep)
+
+      //   } catch (error) {
+      //     logger.error(error)
+      //     Pop.toast(error.message)
+      //   }
+      // },
+      profileVaults: computed(() => AppState.profileVaults),
+      activeKeep: computed(() => AppState.profileKeeps),
+      random: computed(() => Math.floor(Math.random() * 445)),
+      account: computed(() => AppState.account),
+      route: computed(() => route.name)
+
+    }
   }
 }
+
+
 </script>
 
 

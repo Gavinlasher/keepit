@@ -34,7 +34,9 @@ import { useRoute, useRouter } from "vue-router"
 import { vaultKeepsService } from "../services/VaultKeepsService"
 import { AppState } from "../AppState"
 import { vaultsService } from "../services/VaultsService"
+import Keeps from "../components/Keeps.vue"
 export default {
+
   setup() {
     const route = useRoute()
     const router = useRouter()
@@ -53,8 +55,11 @@ export default {
       account: computed(() => AppState.account),
       async deleteVault(id) {
         try {
-          await vaultsService.deleteVault(route.params.id)
-          router.push({ name: "Profile", params: AppState.account.id })
+          if (await Pop.confirm()) {
+
+            await vaultsService.deleteVault(route.params.id)
+            router.push({ name: "Profile", params: AppState.account.id })
+          }
         } catch (error) {
           logger.log(error)
           Pop.toast(error.message, "error message")

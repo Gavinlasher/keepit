@@ -27,7 +27,13 @@
       </div>
       <div class="col-md-12">
         <div class="d-flex bottom-left justify-content-between mt-5 text-wrap">
-          <select name="" id="" v-model="vaultId" class="text-dark me-5">
+          <select
+            v-if="route != 'Vault'"
+            name=""
+            id=""
+            v-model="vaultId"
+            class="text-dark me-5"
+          >
             <option
               class="text-dark"
               :value="pv.id"
@@ -37,8 +43,24 @@
               {{ pv.name }}
             </option>
           </select>
-          <button class="btn btn-success" @click="addToVaultKeep">+</button>
-          <h2 class="selectable me-5" v-if="activeKeep.creatorId == account.id">
+          <button
+            v-if="route != 'Vault'"
+            class="btn btn-success"
+            @click="addToVaultKeep"
+          >
+            +
+          </button>
+          <button
+            v-if="route == 'Vault'"
+            class="btn btn-outline-primary"
+            @click="removeKeepFromVault(keeps.name)"
+          >
+            Remove keep from Vault
+          </button>
+          <h2
+            class="selectable me-5"
+            v-if="activeKeep.creatorId == account.id && route != 'Vault'"
+          >
             <i class="mdi mdi-delete" @click="removeKeep(activeKeep.id)"></i>
           </h2>
           <div
@@ -72,7 +94,13 @@ import { Modal } from "bootstrap"
 import { useRoute, useRouter } from "vue-router"
 import { vaultKeepsService } from "../services/VaultKeepsService"
 export default {
-  setup() {
+  props: {
+    keeps: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props) {
     const route = useRoute()
     const router = useRouter()
     const vaultId = ref({})
@@ -80,8 +108,11 @@ export default {
       vaultId,
       async removeKeep(id) {
         try {
-          await keepsService.removeKeep(id)
-          Modal.getOrCreateInstance(document.getElementById("active-keep")).hide()
+          if (await Pop.confirm()) {
+            await keepsService.removeKeep(id)
+
+            Modal.getOrCreateInstance(document.getElementById("active-keep")).hide()
+          }
         } catch (error) {
           logger.log(error)
           Pop.toast(error.message, "error message")
@@ -104,10 +135,17 @@ export default {
           Pop.toast(error.message)
         }
       },
+      async removeKeepFromVault(id) {
+        logger.log(id)
+      },
       profileVaults: computed(() => AppState.activeVaults),
       activeKeep: computed(() => AppState.activeKeep),
       random: computed(() => Math.floor(Math.random() * 445)),
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+      route: computed(() => route.name),
+      // curkeep: computed(() => props.keeps.vaultKeepId)
+
+
     }
   }
 }
